@@ -14,7 +14,7 @@ mongoose.connect(process.env.MONGODB_STRING, {
 
 
 const userRoutes = require("./routes/usersRoutes");
-const movieRoutes = require("./routes/moviesRoutes");
+const workoutRoute = require("./routes/workoutRoute");
 
 mongoose.connection.once("open", () =>
   console.log("Now connected to MongoDB Atlas.")
@@ -22,7 +22,7 @@ mongoose.connection.once("open", () =>
 
 
 app.use("/users", userRoutes);
-app.use("/movies", movieRoutes);
+app.use("/workouts", workoutRoute);
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`API is now online on port ${process.env.PORT || 3000}`);

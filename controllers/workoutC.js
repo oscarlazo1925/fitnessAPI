@@ -10,21 +10,21 @@ exports.addWorkout = async (req, res) => {
       duration: req.body.duration,
     };
 
-    const workout = new Workout(rawWorkout);   // ✅ lowercase instance
-    const savedWorkout = await workout.save(); // ✅ save instance
-    res.status(201).json(savedWorkout);
+    const workout = new Workout(rawWorkout);
+    const savedWorkout = await workout.save();
+    return res.status(201).json(savedWorkout);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    return res.status(400).json({ message: err.message });
   }
 };
 
 // Get all workouts
 exports.getMyWorkouts = async (req, res) => {
   try {
-    const workouts = await Workout.find({ userId: req.user.id }); // filter by user
-    res.json({ workouts });
+    const workouts = await Workout.find({ userId: req.user.id });
+    return res.json({ workouts });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
 };
 
@@ -34,9 +34,9 @@ exports.getWorkoutById = async (req, res) => {
     const { id } = req.params;
     const workout = await Workout.findById(id);
     if (!workout) return res.status(404).json({ message: "Workout not found" });
-    res.json(workout);
+    return res.json(workout);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
 };
 
@@ -52,9 +52,9 @@ exports.updateWorkout = async (req, res) => {
     if (!updatedWorkout) {
       return res.status(404).json({ message: "Workout not found" });
     }
-    res.json({ message: "Workout updated successfully", updatedWorkout });
+    return res.json({ message: "Workout updated successfully", updatedWorkout });
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    return res.status(400).json({ message: err.message });
   }
 };
 
@@ -66,21 +66,19 @@ exports.deleteWorkout = async (req, res) => {
     if (!deletedWorkout) {
       return res.status(404).json({ message: "Workout not found" });
     }
-    res.json({ message: "Workout deleted successfully" });
+    return res.json({ message: "Workout deleted successfully" });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
 };
 
-
+// Mark Workout as Completed
 exports.completeWorkoutStatus = async (req, res) => {
   console.log(req.params.id, 'completeWorkoutStatus')
   try {
     const { id } = req.params;
 
-    const rawWorkout = {
-      status : "completed"
-    };
+    const rawWorkout = { status: "completed" };
 
     const updatedWorkout = await Workout.findByIdAndUpdate(id, rawWorkout, {
       new: true,
@@ -89,8 +87,8 @@ exports.completeWorkoutStatus = async (req, res) => {
     if (!updatedWorkout) {
       return res.status(404).json({ message: "Workout not found" });
     }
-    res.json({ message: "Workout updated successfully", updatedWorkout });
+    return res.json({ message: "Workout updated successfully", updatedWorkout });
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    return res.status(400).json({ message: err.message });
   }
 };
